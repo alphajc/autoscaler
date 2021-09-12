@@ -15,19 +15,18 @@
 # limitations under the License.
 
 ###
-# This script is to be used when updating Kubernetes and its staging
-# repositories to *tagged* releases. This is the ideal case, but another
-# script, submodule-k8s.sh, is available as a break-glass solution if we must
-# switch to an unreleased commit.
+# This script is to be used as a break-glass solution if there is a breaking
+# change in a release of Kubernetes. This allows us to switch to an unreleased
+# commit by submoduling the whole k/k repository.
 ###
 
 set -o errexit
 set -o pipefail
 
-VERSION=${1#"v"}
+VERSION=${1}
 FORK=${2:-git@github.com:kubernetes/kubernetes.git}
 if [ -z "$VERSION" ]; then
-    echo "Usage: hack/update-vendor.sh <k8s version> <k8s fork:-git@github.com:kubernetes/kubernetes.git>"
+    echo "Usage: hack/submodule-k8s.sh <k8s sha> <k8s fork:-git@github.com:kubernetes/kubernetes.git>"
     exit 1
 fi
 
@@ -48,22 +47,16 @@ MODS=($(
 popd
 rm -rf ${WORKDIR}
 
+git submodule add --force https://github.com/kubernetes/kubernetes
+git submodule update --init --recursive --remote
+cd kubernetes
+git checkout $VERSION
+cd ..
+
+go mod edit "-replace=k8s.io/kubernetes=./kubernetes"
+
 for MOD in "${MODS[@]}"; do
-    V=$(
-        GOMOD="${MOD}@kubernetes-${VERSION}"
-        JSON=$(go mod download -json "${GOMOD}")
-        retval=$?
-        if [ $retval -ne 0 ]; then
-            echo "Error downloading module ${GOMOD}."
-            exit 1
-        fi
-        echo "${JSON}" | sed -n 's|.*"Version": "\(.*\)".*|\1|p'
-    )
-    go mod edit "-replace=${MOD}=${MOD}@${V}"
+    go mod edit "-replace=${MOD}=./kubernetes/staging/src/${MOD}"
 done
-go get "k8s.io/kubernetes@v${VERSION}"
 go mod vendor
 go mod tidy
-git rm -r --force --ignore-unmatch kubernetes
-
-sed -i "s|\(const ClusterAutoscalerVersion = \)\".*\"|\1\"$VERSION\"|" version/version.go
