@@ -10,8 +10,11 @@ require (
 	github.com/Azure/go-autorest/autorest/date v0.3.0
 	github.com/Azure/go-autorest/autorest/to v0.2.0
 	github.com/aws/aws-sdk-go v1.35.24
+	github.com/bitly/go-simplejson v0.5.0
+	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/digitalocean/godo v1.27.0
 	github.com/ghodss/yaml v1.0.0
+	github.com/go-ini/ini v1.63.2
 	github.com/golang/mock v1.4.4
 	github.com/jmespath/go-jmespath v0.4.0
 	github.com/json-iterator/go v1.1.11
@@ -20,6 +23,11 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.7.0
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/as v1.0.258
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.258
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.258
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/tke v1.0.258
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/vpc v1.0.258
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	google.golang.org/api v0.20.0
