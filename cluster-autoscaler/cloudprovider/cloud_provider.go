@@ -51,6 +51,8 @@ const (
 	HuaweicloudProviderName = "huaweicloud"
 	// IonoscloudProviderName gets the provider name of ionoscloud
 	IonoscloudProviderName = "ionoscloud"
+	// TencentcloudProviderName gets the provider name of tencentcloud
+	TencentcloudProviderName = "tencentcloud"
 )
 
 // CloudProvider contains configuration info and functions for interacting with
